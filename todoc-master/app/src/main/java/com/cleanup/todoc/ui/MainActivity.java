@@ -1,9 +1,13 @@
 package com.cleanup.todoc.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,17 +17,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cleanup.todoc.R;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
+import com.cleanup.todoc.utils.StorageUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
+
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
  * <p>Home activity of the application which is displayed when the user opens the app.</p>
@@ -88,6 +101,23 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     @NonNull
     private TextView lblNoTasks;
 
+    /**
+     * The fileName and folderName to save , read and write  in a storage spacre
+     */
+    private static final String FILENAME = "tasksBook.txt";
+    private static final String FOLDERNAME = "bookTasks";
+
+    /**
+     * get permission to write and read in storage
+     */
+    // PERMISSION PURPOSE
+    private static final int RC_STORAGE_WRITE_PERMS = 100;
+
+    /**
+     * Define the authority of the FileProvider
+     */
+    private static final String AUTHORITY="com.cleanup.todoc.student.kevin.preira.fileprovider";
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +136,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 showAddTaskDialog();
             }
         });
+        //  - Read from storage when starting
+        this.readFromStorage();
     }
 
     @Override
@@ -176,9 +208,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 addTask(task);
 
                 dialogInterface.dismiss();
+                save();
             }
             // If name has been set, but project has not been set (this should never occur)
-            else{
+            else {
                 dialogInterface.dismiss();
             }
         }
@@ -319,5 +352,115 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
          * No sort
          */
         NONE
+    }
+
+    // ----------------------------------
+    // UTILS - STORAGE
+    // ----------------------------------
+    @Override
+    //  After permission granted or refused
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+
+
+
+
+
+
+
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.action_save:
+                // 5 - Save
+
+                return true;
+        }
+
+        return false;
+    }*/
+
+    /*public void onClickRadioButton(CompoundButton button, boolean isChecked){
+        if (isChecked) {
+
+        }
+        // Read from storage after user clicked on radio buttons
+        this.readFromStorage();
+    }*/
+
+
+    // Save after user clicked on button
+    private void save() {
+        if (tasks.size() != 0) {
+            this.writeOnExternalStorage(); //Save on external storage
+        } else {
+            //TODO: Save on internal storage
+            this.writeOnInternalStorage();
+        }
+    }
+
+    @AfterPermissionGranted(RC_STORAGE_WRITE_PERMS)
+    // Read from storage
+    private void readFromStorage() {
+
+        // 3 - CHECK PERMISSION
+        if (!EasyPermissions.hasPermissions(this, WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.title_permission), RC_STORAGE_WRITE_PERMS, WRITE_EXTERNAL_STORAGE);
+            return;
+        }
+
+        if (StorageUtils.isExternalStorageReadable()) {
+            // EXTERNAL
+
+            // External - Public
+            String[] taskList = new String[tasks.size()];
+            for (int i = 0; i < tasks.size(); i++) {
+                taskList[i] = String.valueOf(tasks.get(i).getId());
+            }
+
+            //this.editText.setText(StorageUtils.getTextFromStorage(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), this, FILENAME, FOLDERNAME));
+                 /*else {
+                    // External - Privatex
+                    this.editText.setText(StorageUtils.getTextFromStorage(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, FILENAME, FOLDERNAME));
+                }*/
+
+        } else {
+            // TODO : READ FROM INTERNAL STORAGE
+        }
+    }
+
+    // Write on external storage
+    private void writeOnExternalStorage() {
+
+        for (int i = 0; i < tasks.size(); i++) {
+            if (StorageUtils.isExternalStorageWritable()) {
+
+                StorageUtils.setTextInStorage(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), this, FILENAME, FOLDERNAME, String.valueOf(tasks.get(i).getId()));
+                /*else {
+                    StorageUtils.setTextInStorage(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), this, FILENAME, FOLDERNAME, this.editText.getText().toString());
+                }*/
+            } else {
+                Toast.makeText(this, getString(R.string.external_storage_impossible_create_file), Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    // 1 - Write on internal storage
+    private void writeOnInternalStorage() {
+        for (int i = 0; i < tasks.size(); i++) {
+           /* if (radioButtonInternalVolatileChoice.isChecked()) {
+                StorageUtils.setTextInStorage(getCacheDir(), this, FILENAME, FOLDERNAME, this.editText.getText().toString());
+            } else {
+                StorageUtils.setTextInStorage(getFilesDir(), this, FILENAME, FOLDERNAME, this.editText.getText().toString());
+            }*/
+
+            StorageUtils.setTextInStorage(getFilesDir(), this, FILENAME, FOLDERNAME, String.valueOf(tasks.get(i).getId()));
+        }
     }
 }
