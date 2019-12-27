@@ -20,7 +20,7 @@ import java.io.Writer;
  */
 public class StorageUtils {
 
-    private static File createOrGetFile(File destination, String fileName, String folderName){
+    private static File createOrGetFile(File destination, String fileName, String folderName) {
         File folder = new File(destination, folderName);
         return new File(folder, fileName);
     }
@@ -30,7 +30,7 @@ public class StorageUtils {
     // READ & WRITE ON STORAGE
     // ----------------------------------
 
-    private static String readOnFile(Context context, File file){
+    private static String readOnFile(Context context, File file) {
 
         String result = null;
         if (file.exists()) {
@@ -46,12 +46,10 @@ public class StorageUtils {
                         line = br.readLine();
                     }
                     result = sb.toString();
-                }
-                finally {
+                } finally {
                     br.close();
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 Toast.makeText(context, context.getString(R.string.error_happened), Toast.LENGTH_LONG).show();
             }
         }
@@ -61,7 +59,7 @@ public class StorageUtils {
 
     // ---
 
-    private static void writeOnFile(Context context, String text, File file){
+    private static void writeOnFile(Context context, String text, File file) {
 
         try {
             file.getParentFile().mkdirs();
@@ -86,12 +84,12 @@ public class StorageUtils {
     // storage spaces
     // ----------------------------------
 
-    public static String getTextFromStorage(File rootDestination, Context context, String fileName, String folderName){
+    public static String getTextFromStorage(File rootDestination, Context context, String fileName, String folderName) {
         File file = createOrGetFile(rootDestination, fileName, folderName);
         return readOnFile(context, file);
     }
 
-    public static void setTextInStorage(File rootDestination, Context context, String fileName, String folderName, String text){
+    public static void setTextInStorage(File rootDestination, Context context, String fileName, String folderName, String text) {
         File file = createOrGetFile(rootDestination, fileName, folderName);
         writeOnFile(context, text, file);
     }

@@ -21,4 +21,10 @@
 
     <string name="saved">Le contenu à été sauvegardé</string>
 
+    <string name="external_storage_impossible_create_file">Impossible de créer le fichier</string>
+
+    <string name="title_permission">permission external storage</string>
+
+    <string name="task_book_share">taskBook</string>
+
 </resources>
