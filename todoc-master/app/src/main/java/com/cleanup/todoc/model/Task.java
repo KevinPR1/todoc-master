@@ -24,6 +24,7 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     private long id;
 
+
     /**
      * The unique identifier of the project associated to the task
      */
@@ -75,6 +76,14 @@ public class Task {
         this.id = id;
     }
 
+    public long getProjectId() {
+        return projectId;
+    }
+
+    //region Getter
+
+    //endregion
+
     /**
      * Sets the unique identifier of the project associated to the task.
      *
@@ -102,6 +111,10 @@ public class Task {
     @NonNull
     public String getName() {
         return name;
+    }
+
+    public long getCreationTimestamp() {
+        return creationTimestamp;
     }
 
     /**

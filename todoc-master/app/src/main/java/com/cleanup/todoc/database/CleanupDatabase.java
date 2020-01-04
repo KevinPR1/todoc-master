@@ -1,6 +1,7 @@
 package com.cleanup.todoc.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
+import android.arch.persistence.room.Database;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
@@ -10,10 +11,13 @@ import android.support.annotation.NonNull;
 
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.database.dao.TaskDao;
+import com.cleanup.todoc.model.Project;
+import com.cleanup.todoc.model.Task;
 
 /**
  * Created by Kevin  - Openclassrooms on 02/01/2020
  */
+@Database(entities = {Task.class, Project.class}, version = 1, exportSchema = false)
 public abstract class CleanupDatabase extends RoomDatabase {
 
     // --- SINGLETON ---
@@ -23,8 +27,7 @@ public abstract class CleanupDatabase extends RoomDatabase {
     public abstract TaskDao taskDao();
 
     public abstract ProjectDao projectDao();
-
-
+    
     // --- INSTANCE ---
     public static CleanupDatabase getInstance(Context context) {
         if (INSTANCE == null) {

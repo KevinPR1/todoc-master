@@ -13,23 +13,26 @@ import android.support.annotation.Nullable;
  */
 @Entity
 public class Project {
+    //region attributs
     /**
      * The unique identifier of the project
      */
     @PrimaryKey
-    private final long id;
+    private  long id;
 
     /**
      * The name of the project
      */
     @NonNull
-    private final String name;
+    private  String name;
 
     /**
      * The hex (ARGB) code of the color associated to the project
      */
     @ColorInt
-    private final int color;
+    private  int color;
+
+    //endregion
 
     /**
      * Instantiates a new Project.
@@ -42,6 +45,9 @@ public class Project {
         this.id = id;
         this.name = name;
         this.color = color;
+    }
+
+    public Project() {
     }
 
     /**
@@ -107,5 +113,17 @@ public class Project {
     @NonNull
     public String toString() {
         return getName();
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setName(@NonNull String name) {
+        this.name = name;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 }
