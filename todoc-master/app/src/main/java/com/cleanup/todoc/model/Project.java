@@ -17,7 +17,7 @@ public class Project {
     /**
      * The unique identifier of the project
      */
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private  long id;
 
     /**
@@ -46,6 +46,7 @@ public class Project {
         this.name = name;
         this.color = color;
     }
+
 
     public Project() {
     }

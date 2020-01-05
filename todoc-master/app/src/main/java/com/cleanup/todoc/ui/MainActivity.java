@@ -28,8 +28,10 @@ import com.cleanup.todoc.model.Task;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -115,7 +117,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 showAddTaskDialog();
             }
         });
-        CleanupDatabase.getInstance(this);
+        CleanupDatabase.getInstance(getApplicationContext());
+        List<Project> projectList = Arrays.asList(Project.getAllProjects());
+        CleanupDatabase.getInstance(getApplicationContext()).projectDao().createProject(projectList.get(0));
     }
 
     @Override

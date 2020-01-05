@@ -35,7 +35,7 @@ public abstract class CleanupDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             CleanupDatabase.class, "MyDatabase.db")
-                            .addCallback(prepopulateDatabase())
+                            .addCallback(prepopulateDatabase()).allowMainThreadQueries()
                             .build();
                 }
             }
@@ -50,12 +50,19 @@ public abstract class CleanupDatabase extends RoomDatabase {
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
+                ContentValues project = new ContentValues();
+                project.put("id",2);
+                project.put("name","2");
+                project.put("color",0xFFEADAD1);
+                db.insert("Project", OnConflictStrategy.IGNORE,project);
 
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", 1);
-                contentValues.put("task", "Salle 2");
+                contentValues.put("name", "Salle 2");
+                contentValues.put("projectId", 2);
+                contentValues.put("creationTimestamp", 1578217579);
 
-                db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
+                db.insert("Task", OnConflictStrategy.IGNORE, contentValues);
             }
         };
 
