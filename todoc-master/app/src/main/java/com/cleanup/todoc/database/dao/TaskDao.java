@@ -16,15 +16,27 @@ import java.util.List;
 @Dao
 public interface TaskDao {
 
+    /**
+     * get the list of task
+     */
     @Query("SELECT * FROM Task WHERE projectId = :id")
     LiveData<List<Task>> getTasks(long id);
 
+    /**
+     * insert a task in the list
+     */
     @Insert
     long insertTask(Task task);
 
+    /**
+     * update task
+     */
     @Update
     int updateTask(Task task);
 
+    /**
+     * delete a task into the list
+     */
     @Query("DELETE FROM Task WHERE id = :id")
     int deleteTask(long id);
 }

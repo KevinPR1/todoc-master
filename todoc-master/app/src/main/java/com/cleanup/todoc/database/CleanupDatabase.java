@@ -29,6 +29,9 @@ public abstract class CleanupDatabase extends RoomDatabase {
     public abstract ProjectDao projectDao();
     
     // --- INSTANCE ---
+    /**
+     * get instance of database : "MyDatabase.db"
+     */
     public static CleanupDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (CleanupDatabase.class) {
@@ -43,19 +46,22 @@ public abstract class CleanupDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-
+    /**
+     * test to create some task for instrumentalized tests
+     */
     private static Callback prepopulateDatabase() {
         return new Callback() {
 
             @Override
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
+                //project
                 ContentValues project = new ContentValues();
                 project.put("id",2);
                 project.put("name","2");
                 project.put("color",0xFFEADAD1);
                 db.insert("Project", OnConflictStrategy.IGNORE,project);
-
+                //Task
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("id", 1);
                 contentValues.put("name", "Salle 2");

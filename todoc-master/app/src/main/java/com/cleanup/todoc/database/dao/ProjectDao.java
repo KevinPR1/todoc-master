@@ -14,10 +14,15 @@ import com.cleanup.todoc.model.Project;
  */
 @Dao
 public interface ProjectDao {
-
+    /**
+     * Create a project when the user click on any project in the spinner
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void createProject(Project project);
 
+    /**
+     * get prject Id for the task
+     */
     @Query("SELECT * FROM Project WHERE id = :id")
     LiveData<Project> getProject(long id);
 
