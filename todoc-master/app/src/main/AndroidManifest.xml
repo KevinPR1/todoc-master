@@ -2,9 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cleanup.todoc">
 
-    <!-- ENABLE PERMISSIONS ABOUT EXTERNAL STORAGE ACCESS -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 
     <!-- Ignore GoogleAppIndexingWarning is safe because we don't want the app to be indexable -->
     <application
