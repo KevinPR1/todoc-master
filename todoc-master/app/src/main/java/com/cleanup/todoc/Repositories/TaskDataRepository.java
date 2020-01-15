@@ -18,16 +18,12 @@ public class TaskDataRepository {
     public TaskDataRepository(TaskDao taskDao) { this.taskDao = taskDao; }
 
     // --- GET ---
-    public LiveData<List<Task>> getTask(long taskId){ return this.taskDao.getTasks(taskId); }
+    public LiveData<List<Task>> getTask(){ return this.taskDao.getTasks(); }
 
     // --- CREATE ---
 
     public void createTask(Task task){ taskDao.insertTask(task); }
 
     // --- DELETE ---
-    public void deleteTask(long taskId){ taskDao.deleteTask(taskId); }
-
-    // --- UPDATE ---
-    public void updateTask(Task task){ taskDao.updateTask(task); }
-
+    public void deleteTask(Task task){ taskDao.deleteTask(task); }
 }

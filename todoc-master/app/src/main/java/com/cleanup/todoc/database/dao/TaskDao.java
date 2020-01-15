@@ -2,9 +2,10 @@ package com.cleanup.todoc.database.dao;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+
 
 import com.cleanup.todoc.model.Task;
 
@@ -19,8 +20,8 @@ public interface TaskDao {
     /**
      * get the list of task
      */
-    @Query("SELECT * FROM Task WHERE projectId = :id")
-    LiveData<List<Task>> getTasks(long id);
+    @Query("SELECT * FROM Task")
+    LiveData<List<Task>> getTasks();
 
     /**
      * insert a task in the list
@@ -29,14 +30,8 @@ public interface TaskDao {
     long insertTask(Task task);
 
     /**
-     * update task
-     */
-    @Update
-    int updateTask(Task task);
-
-    /**
      * delete a task into the list
      */
-    @Query("DELETE FROM Task WHERE id = :id")
-    int deleteTask(long id);
+    @Delete
+    void deleteTask(Task task);
 }
