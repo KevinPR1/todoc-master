@@ -85,6 +85,22 @@ public class TaskDaoTest {
         assertEquals(3, tasks.size());
     }
 
+
+    @Test
+    public void insertAndUpdateItem() throws InterruptedException {
+        // BEFORE : Adding demo user & demo items. Next, update item added & re-save it
+        this.database.projectDao().createProject(PROJECT_TEST);
+        this.database.taskDao().insertTask(NEW_TASK_1);
+        Task taskAdded = LiveDataUtil.getValue(this.database.taskDao().getTasks(PROJECT_ID)).get(0);
+
+        this.database.taskDao().updateTask(taskAdded);
+
+        //TEST
+        List<Task> tasks = LiveDataUtil.getValue(this.database.taskDao().getTasks(PROJECT_ID));
+        assertEquals(1, tasks.size());
+    }
+
+
     @Test
     public void insertAndDeleteTask() throws InterruptedException {
         // BEFORE : Adding demo user & demo item. Next, get the item added & delete it.
