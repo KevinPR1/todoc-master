@@ -49,7 +49,7 @@ public class TaskViewModel extends ViewModel {
 
         executor.execute(() -> {
 
-            this.projectDataSource.crreateProject(project);
+            this.projectDataSource.createProject(project);
 
         });
     }

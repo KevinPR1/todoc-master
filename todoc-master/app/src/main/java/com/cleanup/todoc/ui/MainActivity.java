@@ -106,8 +106,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private TaskViewModel mtaskViewModel;
 
 
-    private Project[] projectList;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +124,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 showAddTaskDialog();
             }
         });
-        projectList = Project.getAllProjects();
+
+
         this.configureViewModel();
         this.getTasks();
 
@@ -165,6 +164,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         mtaskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
+        Project[] projectList = Project.getAllProjects();
+        for (Project project:projectList
+        ) {
+            mtaskViewModel.createProject(project);
+        }
     }
 
     ///////////// TASK /////////////

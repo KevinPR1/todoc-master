@@ -14,14 +14,16 @@ import java.util.concurrent.Executors;
  */
 public class Injection {
 
-    public static TaskDataRepository provideTaskDataSource(Context context) {
-        CleanupDatabase database = CleanupDatabase.getInstance(context);
-        return new TaskDataRepository(database.taskDao());
-    }
+
 
     public static ProjectDataRepository provideProjectDataSource(Context context) {
         CleanupDatabase database = CleanupDatabase.getInstance(context);
         return new ProjectDataRepository(database.projectDao());
+    }
+
+    public static TaskDataRepository provideTaskDataSource(Context context) {
+        CleanupDatabase database = CleanupDatabase.getInstance(context);
+        return new TaskDataRepository(database.taskDao());
     }
 
     public static Executor provideExecutor(){ return Executors.newSingleThreadExecutor(); }
