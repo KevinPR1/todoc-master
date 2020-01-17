@@ -17,14 +17,5 @@
 
     <string name="empty_task_name">Le nom de la tâche doit être renseigné</string>
 
-    <string name="error_happened">Une erreur est survenue lors de la lecture du dossier</string>
-
-    <string name="saved">Le contenu à été sauvegardé</string>
-
-    <string name="external_storage_impossible_create_file">Impossible de créer le fichier</string>
-
-    <string name="title_permission">permission external storage</string>
-
-    <string name="task_book_share">taskBook</string>
 
 </resources>
