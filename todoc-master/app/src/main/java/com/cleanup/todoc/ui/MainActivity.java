@@ -124,16 +124,11 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
                 showAddTaskDialog();
             }
         });
-
-
         this.configureViewModel();
         this.getTasks();
-
-
-
-
     }
 
+    //region Menu actions
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.actions, menu);
@@ -158,9 +153,10 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
 
         return super.onOptionsItemSelected(item);
     }
-    ///////////// Configuration /////////////
+    //endregion
 
 
+    //region CONFIGURATION
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         mtaskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
@@ -170,9 +166,9 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             mtaskViewModel.createProject(project);
         }
     }
+    //endregion
 
-    ///////////// TASK /////////////
-
+    //region TASK
 
     // Get all tasks
     private void getTasks() { this.mtaskViewModel.getTasks().observe(this, this::updateTasks); }
@@ -181,15 +177,58 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     // Delete task
     private void deleteTask(Task task) { this.mtaskViewModel.deleteTask(task); }
 
-
+    /**
+     * Delete the current task to the list of tasks.
+     *
+     * @param task the task to be deleted to the list
+     */
     @Override
     public void onDeleteTask(Task task) {
         deleteTask(task);
         updateTasks(tasks);
     }
 
+    /**
+     * Adds the given task to the list of created tasks.
+     *
+     * @param task the task to be added to the list
+     */
+    private void addTask(@NonNull Task task) {
+        createTask(task);
+        updateTasks(tasks);
+    }
 
-    ///////////// DIALOG /////////////
+    /**
+     * Updates the list of tasks in the UI
+     */
+    private void updateTasks(List<Task> tasks) {
+        this.tasks = (ArrayList<Task>) tasks;
+        if (tasks.size() == 0) {
+            lblNoTasks.setVisibility(View.VISIBLE);
+            listTasks.setVisibility(View.GONE);
+        } else {
+            lblNoTasks.setVisibility(View.GONE);
+            listTasks.setVisibility(View.VISIBLE);
+            switch (sortMethod) {
+                case ALPHABETICAL:
+                    Collections.sort(tasks, new Task.TaskAZComparator());
+                    break;
+                case ALPHABETICAL_INVERTED:
+                    Collections.sort(tasks, new Task.TaskZAComparator());
+                    break;
+                case RECENT_FIRST:
+                    Collections.sort(tasks, new Task.TaskRecentComparator());
+                    break;
+                case OLD_FIRST:
+                    Collections.sort(tasks, new Task.TaskOldComparator());
+                    break;
+            }
+            adapter.updateTasks(tasks);
+        }
+    }
+    //endregion
+
+    //region DIALOG
     /**
      * Called when the user clicks on the positive button of the Create Task Dialog.
      *
@@ -253,44 +292,6 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         populateDialogSpinner();
     }
 
-    /**
-     * Adds the given task to the list of created tasks.
-     *
-     * @param task the task to be added to the list
-     */
-    private void addTask(@NonNull Task task) {
-        createTask(task);
-        updateTasks(tasks);
-    }
-
-    /**
-     * Updates the list of tasks in the UI
-     */
-    private void updateTasks(List<Task> tasks) {
-        this.tasks = (ArrayList<Task>) tasks;
-        if (tasks.size() == 0) {
-            lblNoTasks.setVisibility(View.VISIBLE);
-            listTasks.setVisibility(View.GONE);
-        } else {
-            lblNoTasks.setVisibility(View.GONE);
-            listTasks.setVisibility(View.VISIBLE);
-            switch (sortMethod) {
-                case ALPHABETICAL:
-                    Collections.sort(tasks, new Task.TaskAZComparator());
-                    break;
-                case ALPHABETICAL_INVERTED:
-                    Collections.sort(tasks, new Task.TaskZAComparator());
-                    break;
-                case RECENT_FIRST:
-                    Collections.sort(tasks, new Task.TaskRecentComparator());
-                    break;
-                case OLD_FIRST:
-                    Collections.sort(tasks, new Task.TaskOldComparator());
-                    break;
-            }
-            adapter.updateTasks(tasks);
-        }
-    }
 
     /**
      * Returns the dialog allowing the user to create a new task.
@@ -345,6 +346,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
             dialogSpinner.setAdapter(adapter);
         }
     }
+    //endregion
 
     /**
      * List of all possible sort methods for task
