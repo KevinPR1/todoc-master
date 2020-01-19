@@ -48,6 +48,7 @@ public abstract class CleanupDatabase extends RoomDatabase {
 
     /**
      * test to create some task for instrumentalized tests
+     * and create some data in the virtual phone
      */
     private static Callback prepopulateDatabase() {
         return new Callback() {

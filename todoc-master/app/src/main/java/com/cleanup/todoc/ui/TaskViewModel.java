@@ -2,7 +2,6 @@ package com.cleanup.todoc.ui;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.Nullable;
 
 import com.cleanup.todoc.Repositories.ProjectDataRepository;
 import com.cleanup.todoc.Repositories.TaskDataRepository;
@@ -17,14 +16,12 @@ import java.util.concurrent.Executor;
  */
 public class TaskViewModel extends ViewModel {
 
-    // REPOSITORIES
+    //region REPOSITORIES
     private final TaskDataRepository taskDataSource;
     private final ProjectDataRepository projectDataSource;
     private final Executor executor;
+    //endregion
 
-    // DATA
-    @Nullable
-    private LiveData<Project> currentProject;
 
     public TaskViewModel(TaskDataRepository taskDataSource, ProjectDataRepository projectDataSource, Executor executor) {
         this.taskDataSource = taskDataSource;
@@ -32,45 +29,50 @@ public class TaskViewModel extends ViewModel {
         this.executor = executor;
     }
 
-    public void init(long projectId) {
-        if (this.currentProject != null) {
-            return;
-        }
-        currentProject = projectDataSource.getProject(projectId);
-    }
 
-    // -------------
-    // FOR PROJECT
-    // -------------
 
-    public LiveData<Project> getProjects(long projectId) { return this.currentProject;  }
 
+    //region Project
+
+    /**
+     * Create project ( from database )
+     */
     public void createProject(Project project) {
-
         executor.execute(() -> {
-
             this.projectDataSource.createProject(project);
-
         });
     }
 
-    // -------------
-    // FOR TASKS
-    // -------------
+    //endregion
 
+
+    //region Task
+
+    /**
+     * Get list task ( from database )
+     */
     public LiveData<List<Task>> getTasks() {
         return taskDataSource.getTask();
     }
 
+    /**
+     * Create task ( from database )
+     */
     public void createTask(Task task) {
         executor.execute(() -> {
             taskDataSource.createTask(task);
         });
     }
 
+    /**
+     * Delete task ( from database )
+     */
     public void deleteTask(Task task) {
         executor.execute(() -> {
             taskDataSource.deleteTask(task);
         });
     }
+
+    //endregion
+
 }

@@ -12,11 +12,21 @@ public class ProjectDataRepository {
 
     private final ProjectDao projectDao;
 
+    /**
+     * ViewModel does not directly manipulate the data source.
+     */
     public ProjectDataRepository(ProjectDao projectDao) { this.projectDao = projectDao; }
 
-    // --- GET USER ---
+    /**
+     * Get the list of project in database
+     */
+    // --- GET PROJECT ---
     public LiveData<Project> getProject(long projectId) { return this.projectDao.getProject(projectId); }
 
+    /**
+     * Create project from database
+     */
+    // --- CREATE PROJECT ---
     public void createProject(Project project)
     {
         this.projectDao.createProject(project);
