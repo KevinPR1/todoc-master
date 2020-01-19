@@ -15,15 +15,26 @@ public class TaskDataRepository {
 
     private final TaskDao taskDao;
 
+    /**
+     * ViewModel does not directly manipulate the data source.
+     */
     public TaskDataRepository(TaskDao taskDao) { this.taskDao = taskDao; }
 
+    /**
+     * Get the list of task in database
+     */
     // --- GET ---
     public LiveData<List<Task>> getTask(){ return this.taskDao.getTasks(); }
 
+    /**
+     * Create task from database
+     */
     // --- CREATE ---
-
     public void createTask(Task task){ taskDao.insertTask(task); }
 
+    /**
+     * Delete task from database
+     */
     // --- DELETE ---
     public void deleteTask(Task task){ taskDao.deleteTask(task); }
 }

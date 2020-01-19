@@ -15,12 +15,17 @@ import java.util.concurrent.Executors;
 public class Injection {
 
 
-
+    /**
+     * provide project for each project
+     */
     public static ProjectDataRepository provideProjectDataSource(Context context) {
         CleanupDatabase database = CleanupDatabase.getInstance(context);
         return new ProjectDataRepository(database.projectDao());
-    }
 
+    }
+    /**
+     * provide task for each task
+     */
     public static TaskDataRepository provideTaskDataSource(Context context) {
         CleanupDatabase database = CleanupDatabase.getInstance(context);
         return new TaskDataRepository(database.taskDao());
@@ -28,6 +33,9 @@ public class Injection {
 
     public static Executor provideExecutor(){ return Executors.newSingleThreadExecutor(); }
 
+    /**
+     * provide ViewModelFactory for data
+     */
     public static ViewModelFactory provideViewModelFactory(Context context) {
         TaskDataRepository dataSourceTask = provideTaskDataSource(context);
         ProjectDataRepository dataSourceProject = provideProjectDataSource(context);

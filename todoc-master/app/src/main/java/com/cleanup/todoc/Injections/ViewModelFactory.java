@@ -14,6 +14,9 @@ import java.util.concurrent.Executor;
  */
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
+    /**
+     * Object to initialise TaskViewModel.class
+     */
     private final TaskDataRepository taskDataSource;
     private final ProjectDataRepository projectDataSource;
     private final Executor executor;
@@ -23,7 +26,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         this.projectDataSource = projectDataSource;
         this.executor = executor;
     }
-
+    /**
+     * Process to create ItemViewModel in the factory
+     */
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(TaskViewModel.class)) {
