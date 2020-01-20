@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,12 +105,12 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * ViwModel for data
      */
     private TaskViewModel mtaskViewModel;
-
+public static final String TAG = "MainActivity";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreate: Main activity created");
         setContentView(R.layout.activity_main);
 
         listTasks = findViewById(R.id.list_tasks);
