@@ -67,8 +67,8 @@ public class TaskDaoTest {
     @Test
     public void getTasksWhenNoTaskInserted() throws InterruptedException {
         // TEST
-        List<Task> items = LiveDataUtil.getValue(this.database.taskDao().getTasks());
-        assertTrue(items.isEmpty());
+        List<Task> tasks = LiveDataUtil.getValue(this.database.taskDao().getTasks());
+        assertTrue(tasks.isEmpty());
     }
 
     @Test
@@ -97,8 +97,8 @@ public class TaskDaoTest {
         this.database.taskDao().deleteTask(taskAdded);
 
         //TEST
-        List<Task> items = LiveDataUtil.getValue(this.database.taskDao().getTasks());
-        assertTrue(items.isEmpty());
+        List<Task> tasks = LiveDataUtil.getValue(this.database.taskDao().getTasks());
+        assertTrue(tasks.isEmpty());
     }
 
 }
