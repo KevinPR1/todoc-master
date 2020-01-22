@@ -5,6 +5,8 @@ import android.arch.lifecycle.LiveData;
 import com.cleanup.todoc.database.dao.ProjectDao;
 import com.cleanup.todoc.model.Project;
 
+import java.util.List;
+
 /**
  * Created by Kevin  - Openclassrooms on 15/01/2020
  */
@@ -21,7 +23,7 @@ public class ProjectDataRepository {
      * Get the list of project in database
      */
     // --- GET PROJECT ---
-    public LiveData<Project> getProject(long projectId) { return this.projectDao.getProject(projectId); }
+    public LiveData<List<Project>> getAllProjects() { return this.projectDao.getAllProjects(); }
 
     /**
      * Create project from database
