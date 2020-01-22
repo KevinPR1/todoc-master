@@ -57,19 +57,22 @@ public abstract class CleanupDatabase extends RoomDatabase {
             public void onCreate(@NonNull SupportSQLiteDatabase db) {
                 super.onCreate(db);
                 //project
-                ContentValues project = new ContentValues();
-                project.put("id",2);
-                project.put("name","2");
-                project.put("color",0xFFEADAD1);
-                db.insert("Project", OnConflictStrategy.IGNORE,project);
-                //Task
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("id", 1);
-                contentValues.put("name", "Salle 2");
-                contentValues.put("projectId", 2);
-                contentValues.put("creationTimestamp", 1578217579);
+                contentValues.put("id", 1L);
+                contentValues.put("name", "Projet Tartampion");
+                contentValues.put("color", 0xFFEADAD1);
+                db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
 
-                db.insert("Task", OnConflictStrategy.IGNORE, contentValues);
+                contentValues.put("id", 2L);
+                contentValues.put("name", "Projet Lucidia");
+                contentValues.put("color", 0xFFB4CDBA);
+                db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
+
+                contentValues.put("id", 3L);
+                contentValues.put("name", "Projet Circus");
+                contentValues.put("color", 0xFFA3CED2);
+                db.insert("Project", OnConflictStrategy.IGNORE, contentValues);
+
             }
         };
 

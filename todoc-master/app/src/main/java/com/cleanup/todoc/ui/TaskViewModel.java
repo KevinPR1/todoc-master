@@ -43,6 +43,10 @@ public class TaskViewModel extends ViewModel {
         });
     }
 
+    public LiveData<List<Project>> getAllProjects()
+    {
+        return this.projectDataSource.getAllProjects();
+    }
     //endregion
 
 
