@@ -55,13 +55,19 @@ public class TaskDaoTest {
         database.close();
     }
 
+    /**
+     * get all projects , add a project and check if the size of projects is 0
+     * then , get all projects after the last project added , and check if the list contain Project_TEST
+     */
     @Test
     public void insertAndGetProject() throws InterruptedException {
-        // BEFORE : Adding a new user
-        this.database.projectDao().createProject(PROJECT_TEST);
         // TEST
-        Project project = LiveDataUtil.getValue(this.database.projectDao().getProject(PROJECT_ID));
-        assertTrue(project.getName().equals(PROJECT_TEST.getName()) && project.getId() == PROJECT_ID);
+        List<Project> projects = LiveDataUtil.getValue(this.database.projectDao().getAllProjects());
+        this.database.projectDao().createProject(PROJECT_TEST);
+        assertEquals(projects.size(), 0);
+
+        projects = LiveDataUtil.getValue(this.database.projectDao().getAllProjects());
+        assertEquals(projects.size(), 1);
     }
 
     @Test
@@ -73,7 +79,6 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndGetTasks() throws InterruptedException {
-        // BEFORE : Adding demo user & demo items
 
         this.database.projectDao().createProject(PROJECT_TEST);
         this.database.taskDao().insertTask(NEW_TASK_1);
@@ -90,7 +95,6 @@ public class TaskDaoTest {
 
     @Test
     public void insertAndDeleteTask() throws InterruptedException {
-        // BEFORE : Adding demo user & demo item. Next, get the item added & delete it.
         this.database.projectDao().createProject(PROJECT_TEST);
         this.database.taskDao().insertTask(NEW_TASK_1);
         Task taskAdded = LiveDataUtil.getValue(this.database.taskDao().getTasks()).get(0);

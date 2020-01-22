@@ -1,5 +1,6 @@
 package com.cleanup.todoc.ui;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 
@@ -26,13 +27,11 @@ import android.widget.TextView;
 import com.cleanup.todoc.Injections.Injection;
 import com.cleanup.todoc.Injections.ViewModelFactory;
 import com.cleanup.todoc.R;
-import com.cleanup.todoc.database.CleanupDatabase;
 import com.cleanup.todoc.model.Project;
 import com.cleanup.todoc.model.Task;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -126,6 +125,7 @@ public static final String TAG = "MainActivity";
             }
         });
         this.configureViewModel();
+        this.getAllProject();
         this.getTasks();
     }
 
@@ -161,11 +161,6 @@ public static final String TAG = "MainActivity";
     private void configureViewModel(){
         ViewModelFactory mViewModelFactory = Injection.provideViewModelFactory(this);
         mtaskViewModel = ViewModelProviders.of(this, mViewModelFactory).get(TaskViewModel.class);
-        Project[] projectList = Project.getAllProjects();
-        for (Project project:projectList
-        ) {
-            mtaskViewModel.createProject(project);
-        }
     }
     //endregion
 
@@ -173,6 +168,8 @@ public static final String TAG = "MainActivity";
 
     // Get all tasks
     private void getTasks() { this.mtaskViewModel.getTasks().observe(this, this::updateTasks); }
+    //Get all projects
+    private void getAllProject() { this.mtaskViewModel.getAllProjects();}
     // Insert task
     private void createTask(Task task) { this.mtaskViewModel.createTask(task); }
     // Delete task
